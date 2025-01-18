@@ -27,17 +27,14 @@ function populateQuestion(questionData) {
         button.textContent = questionData.answers[index];
 
         // Update event listener for the current button
-        button.onclick = () => {
-            handleAnswerClick(index, questionData.correct);
-        };
+        button.onclick = () => handleAnswerClick(index, questionData.correct);
     });
 
-    // Reset feedback text when a new question is displayed
-    document.getElementById("feedbackText").textContent = "";
-    document.getElementById("feedbackText").style.color = "darkslategray";
-    if (!feedbackText) {
-        console.error("Feedback element not found!");
-        return;
+    // Reset the feedbackText upon populating a new question
+    const feedbackText = document.getElementById("feedbackText");
+    if (feedbackText) {
+        feedbackText.textContent = "";
+        feedbackText.style.color = "black";
     }
 
     // Update the progress display
@@ -62,12 +59,13 @@ function handleAnswerClick(clickedIndex, correctIndex) {
         // Increment index to next question
         currentQuestionIndex++;
 
-        // Check if there even are more questions
-        if (currentQuestionIndex < questions.length) {
-            populateQuestion(questions[currentQuestionIndex]);
-        } else {
-            feedbackText.textContent = "You've completed the quiz! Clever bugger.";
-        }
+        setTimeout(() => {
+            if (currentQuestionIndex < questions.length) {
+                populateQuestion(questions[currentQuestionIndex]);
+            } else {
+                feedbackText.textContent = "You've completed the quiz! Clever bugger.";
+            }
+        }, 1500);
     } else {
         feedbackText.textContent = "Try again, sucker.";
         feedbackText.style.color = "red";
